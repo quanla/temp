@@ -1,0 +1,495 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Máy mô phỏng chu kỳ tín dụng</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: bàn điều khiển cố định bên trái như buồng lái, bên phải là bảng đồng hồ và 4 biểu đồ chạy theo tháng */
+:root{
+  --bg:#f3f5f8; --panel:#ffffff; --ink:#152033; --muted:#5b6678; --line:#dde2ea; --soft:#eaeef4;
+  --accent:#1f5fd6; --accent-ink:#ffffff;
+  --s-rate:#1f5fd6; --s-cpi:#d6402b; --s-exp:#e08a2c; --s-credit:#7b4bd1; --s-ngdp:#8892a3;
+  --s-asset:#c18a00; --s-fund:#7d8798; --s-gap:#14907e; --s-unemp:#5e6b80; --s-dsr:#c2305c;
+  --ok:#1d8a52; --ok-bg:#e3f4ea; --warn:#a86a00; --warn-bg:#fdf1d8; --bad:#c0352b; --bad-bg:#fbe4e1;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e131c; --panel:#161d29; --ink:#e6ebf3; --muted:#97a2b5; --line:#263043; --soft:#1d2635;
+  --accent:#5b93ff; --accent-ink:#0b1220;
+  --s-rate:#5b93ff; --s-cpi:#ff6b55; --s-exp:#f2a650; --s-credit:#a983ff; --s-ngdp:#7f8aa0;
+  --s-asset:#e6b13a; --s-fund:#8a95a8; --s-gap:#3cc4ae; --s-unemp:#9aa7bd; --s-dsr:#ff6f9a;
+  --ok:#4cc988; --ok-bg:#15301f; --warn:#f0b54a; --warn-bg:#352812; --bad:#ff7a6b; --bad-bg:#3a1a18;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e131c; --panel:#161d29; --ink:#e6ebf3; --muted:#97a2b5; --line:#263043; --soft:#1d2635;
+  --accent:#5b93ff; --accent-ink:#0b1220;
+  --s-rate:#5b93ff; --s-cpi:#ff6b55; --s-exp:#f2a650; --s-credit:#a983ff; --s-ngdp:#7f8aa0;
+  --s-asset:#e6b13a; --s-fund:#8a95a8; --s-gap:#3cc4ae; --s-unemp:#9aa7bd; --s-dsr:#ff6f9a;
+  --ok:#4cc988; --ok-bg:#15301f; --warn:#f0b54a; --warn-bg:#352812; --bad:#ff7a6b; --bad-bg:#3a1a18;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1{font-size:1.55rem;font-weight:800;letter-spacing:-.01em;margin:0;text-wrap:balance}
+h2{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 20px}
+header.top p{margin:4px 0 0;color:var(--muted);max-width:62ch}
+.clock{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.date{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 12px;min-width:150px;position:relative;overflow:hidden}
+.date b{display:block;font-family:var(--f-num);font-size:1.05rem}
+.date small{color:var(--muted);font-size:.72rem}
+.date .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--accent);width:0}
+button,select{font:inherit;color:inherit}
+.btn{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:.85rem}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-width:92px}
+.btn:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 8px}
+.grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+aside.panel{position:sticky;top:max(12px,env(safe-area-inset-top,0px))}
+@media (max-width:960px){aside.panel{position:static}}
+.ctl{display:flex;flex-direction:column;gap:6px}
+.ctl .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ctl label{font-weight:600}
+.ctl .val{font-family:var(--f-num);font-weight:600;font-size:1.05rem}
+.ctl .hint{color:var(--muted);font-size:.78rem}
+input[type=range]{width:100%;accent-color:var(--accent)}
+input[type=range]:disabled{opacity:.45}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:8px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:6px;padding:7px;cursor:pointer;font-weight:600;font-size:.84rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.sep{border:0;border-top:1px solid var(--line);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipbtn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 10px;font-size:.8rem;cursor:pointer;font-weight:500}
+.chipbtn:hover{border-color:var(--accent);color:var(--accent)}
+.scen{display:flex;flex-direction:column;gap:6px}
+.scen button{text-align:left;border:1px solid var(--line);background:transparent;border-radius:8px;padding:8px 10px;cursor:pointer}
+.scen button:hover{border-color:var(--accent)}
+.scen button b{display:block;font-size:.84rem}
+.scen button span{color:var(--muted);font-size:.75rem}
+.scen-note{font-size:.78rem;color:var(--accent);min-height:1em}
+main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.phase{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel)}
+.phase .tag{font-weight:800;font-size:.95rem;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.phase p{margin:0;color:var(--muted);min-width:0}
+.t-ok{background:var(--ok-bg);color:var(--ok)} .t-warn{background:var(--warn-bg);color:var(--warn)} .t-bad{background:var(--bad-bg);color:var(--bad)}
+@media (max-width:560px){.phase{flex-direction:column;align-items:flex-start}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .k{font-size:.74rem;color:var(--muted);font-weight:600}
+.kpi .v{font-family:var(--f-num);font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi .s{display:flex;justify-content:space-between;gap:6px;align-items:center;font-size:.74rem;color:var(--muted)}
+.pill{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.charts{grid-template-columns:minmax(0,1fr)}}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px 8px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.chart .head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.chart .q{font-size:.76rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.76rem}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:3px;border-radius:2px;display:inline-block}
+.legend i.dash{background:repeating-linear-gradient(90deg,currentColor 0 4px,transparent 4px 7px)!important;height:2px}
+.legend em{font-style:normal;font-family:var(--f-num);font-weight:600}
+canvas{width:100%;height:200px;display:block;cursor:crosshair}
+.lower{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:12px}
+@media (max-width:900px){.lower{grid-template-columns:minmax(0,1fr)}}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:330px;overflow:auto}
+.log li{display:grid;grid-template-columns:62px 8px minmax(0,1fr);gap:8px;align-items:start;font-size:.84rem}
+.log .m{font-family:var(--f-num);color:var(--muted);font-size:.76rem;padding-top:1px}
+.log .d{width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--muted)}
+.log .d.ok{background:var(--ok)} .log .d.warn{background:var(--warn)} .log .d.bad{background:var(--bad)} .log .d.you{background:var(--accent)}
+.log .empty{color:var(--muted);display:block}
+.how{font-size:.86rem;color:var(--ink)}
+.how p{margin:0 0 8px;max-width:68ch}
+.how ul{margin:0 0 8px;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.how .note{color:var(--muted);font-size:.8rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Máy mô phỏng chu kỳ tín dụng</h1>
+      <p>Điều chỉnh lãi suất và năng suất lao động, rồi xem tín dụng, giá tài sản, lạm phát và nợ phản ứng theo từng tháng. Mỗi tháng mô phỏng kéo dài 3 giây.</p>
+    </div>
+    <div class="clock">
+      <div class="date"><b id="dateLbl">Năm 1 · Tháng 1</b><small id="dateSub">Tháng thứ 0</small><div class="bar" id="mbar"></div></div>
+      <button class="btn primary" id="play">⏸ Tạm dừng</button>
+      <select id="speed" aria-label="Tốc độ">
+        <option value="3000" selected>3 giây/tháng</option>
+        <option value="1000">1 giây/tháng</option>
+        <option value="300">0,3 giây/tháng</option>
+      </select>
+      <button class="btn" id="ff">+12 tháng</button>
+      <button class="btn" id="reset">Làm lại</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="panel" aria-label="Bảng điều khiển">
+      <div class="ctl">
+        <h2>Ai quyết định lãi suất?</h2>
+        <div class="seg" role="group">
+          <button id="mManual" aria-pressed="true">Bạn (thủ công)</button>
+          <button id="mAuto" aria-pressed="false">NHTW tự động</button>
+        </div>
+        <div class="hint" id="modeHint">Bạn kéo thanh trượt để đặt lãi suất mục tiêu.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="row"><label for="rate">Lãi suất điều hành mục tiêu</label><span class="val" id="rateVal">4,50%</span></div>
+        <input type="range" id="rate" min="0" max="15" step="0.25" value="4.5">
+        <div class="hint">Lãi suất trung tính hiện tại ≈ <b class="num" id="neutral">4,50%</b>. Thấp hơn mức này là nới lỏng, cao hơn là thắt chặt. Lãi cho vay = điều hành + 3 điểm.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="row"><label for="step">Tốc độ điều chỉnh lãi suất</label></div>
+        <select id="step">
+          <option value="0.05">Rất chậm: 0,05 điểm %/tháng</option>
+          <option value="0.1">Chậm: 0,1 điểm %/tháng</option>
+          <option value="0.25" selected>Vừa: 0,25 điểm %/tháng</option>
+          <option value="0.5">Nhanh: 0,5 điểm %/tháng</option>
+          <option value="1">Rất nhanh: 1 điểm %/tháng</option>
+          <option value="20">Tức thì</option>
+        </select>
+        <div class="hint">Lãi suất thực tế đi dần về mục tiêu với tốc độ này.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="row"><label for="prod">Tăng năng suất lao động</label><span class="val" id="prodVal">2,0%/năm</span></div>
+        <input type="range" id="prod" min="-1" max="6" step="0.25" value="2">
+        <div class="hint">Năng suất cao: sản lượng tăng nhanh, ít áp lực giá, lợi nhuận và giá trị tài sản cơ bản tăng. Nó cũng nâng lãi suất trung tính.</div>
+      </div>
+
+      <hr class="sep">
+      <div class="ctl">
+        <h2>Cú sốc</h2>
+        <div class="chips">
+          <button class="chipbtn" id="shOil">Giá dầu tăng vọt</button>
+          <button class="chipbtn" id="shSpec">Làn sóng đầu cơ</button>
+          <button class="chipbtn" id="shCredit">Bơm tín dụng</button>
+        </div>
+      </div>
+
+      <hr class="sep">
+      <div class="ctl">
+        <h2>Thí nghiệm gợi ý</h2>
+        <div class="scen" id="scen"></div>
+        <div class="scen-note" id="scenNote"></div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="phase"><span class="tag t-ok" id="phaseTag">Cân bằng</span><p id="phaseTxt">Lãi suất ở mức trung tính, tín dụng tăng ngang thu nhập, giá cả ổn định.</p></div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="charts">
+        <section class="chart"><div class="head"><h2>Lãi suất &amp; lạm phát</h2><span class="q">%/năm</span></div><div class="legend" id="lg0"></div><canvas id="c0"></canvas></section>
+        <section class="chart"><div class="head"><h2>Tốc độ tiền vay (≈ cung tiền)</h2><span class="q">tăng trưởng %/năm</span></div><div class="legend" id="lg1"></div><canvas id="c1"></canvas></section>
+        <section class="chart"><div class="head"><h2>Giá tài sản so với giá trị cơ bản</h2><span class="q">chỉ số, tháng 0 = 100</span></div><div class="legend" id="lg2"></div><canvas id="c2"></canvas></section>
+        <section class="chart"><div class="head"><h2>Nền kinh tế thực &amp; gánh nặng nợ</h2><span class="q">%</span></div><div class="legend" id="lg3"></div><canvas id="c3"></canvas></section>
+      </div>
+
+      <div class="lower">
+        <section class="panel"><h2>Nhật ký diễn biến</h2><ul class="log" id="log"><li><span class="empty">Các mốc quan trọng sẽ hiện ở đây khi xảy ra.</span></li></ul></section>
+        <section class="panel how"><h2>Mô hình vận hành thế nào</h2>
+          <ul>
+            <li><b>Lãi suất thực</b> = lãi cho vay − lạm phát kỳ vọng. Khi nó thấp hơn mức trung tính (2,5% + tăng năng suất), người ta vay nhiều hơn.</li>
+            <li><b>Tiền vay tạo ra tiền</b>: ngân hàng cho vay thì tiền gửi tăng, nên tín dụng tăng nhanh hơn GDP danh nghĩa nghĩa là nợ/GDP leo thang.</li>
+            <li><b>Tiền mới chảy vào tài sản trước</b>: phần tín dụng dư thừa đẩy giá tài sản vượt giá trị cơ bản. Giá tăng lại khuyến khích vay thêm.</li>
+            <li><b>Lạm phát CPI đến muộn</b>: cầu dư thừa phải tích tụ nhiều tháng mới đẩy giá hàng hóa lên. Khi lạm phát kỳ vọng tăng, lãi suất thực tụt thêm nếu NHTW không phản ứng.</li>
+            <li><b>Đổ vỡ</b> xảy ra khi chỉ số căng thẳng vượt ngưỡng: tiền trả lãi quá cao so với thu nhập, bong bóng quá lớn, hoặc lãi suất tăng quá 2 điểm trong 6 tháng.</li>
+          </ul>
+          <p class="note">Đây là mô hình minh họa đã được đơn giản hóa với các hệ số giả định, không dự báo cho nền kinh tế thật. Kinh tế thực còn chịu tác động từ tỷ giá, ngân sách, thương mại và tâm lý theo cách khó lường hơn.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+const SPREAD=3, TARGET=3, WINDOW=120;
+const $=id=>document.getElementById(id);
+const fmt=(v,d=1)=>(v<0?'−':'')+Math.abs(v).toFixed(d).replace('.',',');
+
+/* ---------- MÔ HÌNH ---------- */
+function initState(){return {t:0,i:4.5,iTarget:4.5,gA:2,mode:'manual',maxStep:0.25,
+  x:0,pi:3,pie:3,c:5,D:120,N:100,F:100,B:0,Bdot:0,H:100,panic:0,u:3.5,oil:0,spec:0,hg:5,ngdpg:5,lastx:0,
+  dsr:9,rL:4.5,rn:4.5,iEff:7.5,disc:6.5,hist:[4.5],stress:0,A:100,autoTarget:4.5,cn:5};}
+function step(s){
+  const S={...s}; S.t++;
+  let tgt=S.iTarget;
+  if(S.mode==='auto'){ tgt=(S.gA-0.5)+S.pi+0.5*(S.pi-TARGET)+0.5*S.x; }
+  tgt=Math.max(0,Math.min(20,tgt)); S.autoTarget=tgt;
+  const d=tgt-S.i; S.i+= Math.abs(d)<=S.maxStep?d:Math.sign(d)*S.maxStep;
+  const iL=S.i+SPREAD+3*S.panic;
+  const rL=iL-S.pie, rn=2.5+S.gA; S.rL=rL; S.rn=rn; S.iL=iL;
+  const cn=S.gA+S.pie; S.cn=cn;
+  S.iEff=S.iEff+(iL-S.iEff)*0.1; S.dsr=S.D/S.N*S.iEff;
+  let cs=cn+2.4*(rn-rL)+0.12*(S.hg-S.ngdpg)+0.3*S.x-4*Math.max(0,S.dsr-12)+S.spec-14*S.panic;
+  cs=Math.max(-15,Math.min(45,cs));
+  S.c+=(cs-S.c)*0.12;
+  S.D*=1+S.c/1200;
+  let xs=0.35*(S.c-cn)+0.04*S.B*100-0.35*(rL-rn)-6*S.panic;
+  xs=Math.max(-10,Math.min(8,xs));
+  S.lastx=S.x; S.x+=(xs-S.x)*0.08;
+  const pis=S.pie+0.35*S.x+S.oil-0.4*(S.gA-2);
+  S.pi+=(pis-S.pi)*0.07;
+  S.pie+=0.035*(S.pi-S.pie)+0.025*(TARGET-S.pie);
+  S.ngdpg=S.gA+S.pi+(S.x-S.lastx)*12;
+  S.N*=1+(S.gA+S.pi)/1200+(S.x-S.lastx)/100;
+  S.A*=1+S.gA/1200;
+  const disc=Math.max(2,rL+3-S.gA*0.5), disc0=6.5;
+  S.disc+=(disc-S.disc)*0.1; S.F=S.N*disc0/S.disc;
+  const ce=S.c-cn;
+  const bds=(ce>0?1.5:0.6)*ce+0.5*S.Bdot-0.12*S.B*100-45*S.panic+S.spec*1.5;
+  S.Bdot+=(bds-S.Bdot)*0.15;
+  S.B+=S.Bdot/1200; S.B=Math.max(-0.45,S.B);
+  const Hp=S.H; S.H=S.F*(1+S.B); S.hg=(S.H/Hp-1)*1200;
+  S.hist=S.hist.concat([S.i]).slice(-7); const dI6=S.i-S.hist[0]; S.dI6=dI6;
+  S.stress=Math.max(0,(S.dsr-12)/5)+Math.max(0,S.B-0.35)*0.8+Math.max(0,dI6-2)*0.25
+    +(S.panic<0.2?Math.max(0,-S.Bdot-5)/20:0)+(S.B>0.8&&S.Bdot<5?0.5:0);
+  if(S.stress>1) S.panic+=0.15*(1-S.panic); else S.panic*=(S.stress>0.6?0.97:0.92);
+  S.u=3.5-0.5*S.x;
+  S.oil*=0.95; S.spec*=0.95;
+  S.Y=S.A*(1+S.x/100);
+  return S;
+}
+
+/* ---------- TRẠNG THÁI ỨNG DỤNG ---------- */
+let S, H, playing=true, interval=3000, lastTick=0, schedule=null, events=[], armed={};
+function snap(s){return {t:s.t,i:s.i,pi:s.pi,pie:s.pie,c:s.c,ngdpg:s.gA+s.pi,H:s.H,F:s.F,x:s.x,u:s.u,dsr:s.dsr,debt:s.D/s.N*100,Y:s.Y??s.A,B:s.B,panic:s.panic};}
+function reset(keepScenario){
+  S=initState(); S.Y=100;
+  S.mode=ctlState.mode; S.iTarget=ctlState.rate; S.maxStep=ctlState.step; S.gA=ctlState.prod;
+  S.i=S.iTarget>=0?4.5:4.5;
+  H=[snap(S)]; events=[]; armed={};
+  if(!keepScenario){schedule=null; $('scenNote').textContent='';}
+  renderLog(); render();
+}
+const ctlState={mode:'manual',rate:4.5,step:0.25,prod:2};
+
+/* ---------- SỰ KIỆN ---------- */
+function addEvent(kind,text){events.unshift({t:S.t,kind,text}); renderLog();}
+function monthLabel(t){const y=Math.floor(t/12)+1,m=t%12+1;return `N${y}·T${m}`;}
+function check(key,cond,reset,kind,text){
+  if(armed[key]===undefined) armed[key]=true;
+  if(armed[key]&&cond){armed[key]=false; addEvent(kind,typeof text==='function'?text():text);}
+  else if(!armed[key]&&reset) armed[key]=true;
+}
+let bubbleStart=null, creditStart=null;
+function detectEvents(){
+  const cx=S.c-S.cn;
+  if(cx>4&&creditStart===null) creditStart=S.t; if(cx<1) creditStart=null;
+  if(S.B>0.2&&bubbleStart===null) bubbleStart=S.t; if(S.B<0.05) bubbleStart=null;
+  check('cr15',S.c>15,S.c<10,'warn',()=>`Tín dụng tăng nóng: ${fmt(S.c)}%/năm, gấp ${fmt(S.c/Math.max(1,S.cn),1)} lần GDP danh nghĩa.`);
+  check('b20',S.B>0.2,S.B<0.08,'warn',()=>`Bong bóng hình thành: giá tài sản cao hơn giá trị cơ bản ${fmt(S.B*100,0)}%.`+(creditStart!==null?` Xuất hiện ${S.t-creditStart} tháng sau khi tín dụng bắt đầu tăng nóng.`:''));
+  check('b50',S.B>0.5,S.B<0.3,'bad',()=>`Bong bóng lớn: giá tài sản vượt giá trị cơ bản ${fmt(S.B*100,0)}%.`);
+  check('pi4',S.pi>4,S.pi<3.5,'warn',()=>`Lạm phát tiêu dùng vượt 4% (${fmt(S.pi)}%).`+(bubbleStart!==null?` Đến sau khi bong bóng tài sản bắt đầu ${S.t-bubbleStart} tháng.`:creditStart!==null?` Đến sau ${S.t-creditStart} tháng tín dụng tăng nóng.`:''));
+  check('pi6',S.pi>6,S.pi<5,'bad',()=>`Lạm phát cao: ${fmt(S.pi)}%. Lạm phát kỳ vọng đã lên ${fmt(S.pie)}%.`);
+  check('dsr',S.dsr>12,S.dsr<10.5,'warn',()=>`Gánh nặng trả lãi vượt 12% thu nhập (${fmt(S.dsr)}%). Nợ/GDP ${fmt(S.D/S.N*100,0)}%.`);
+  check('jump',S.dI6>2,S.dI6<1,'warn',()=>`Lãi suất tăng ${fmt(S.dI6)} điểm trong 6 tháng. Người vay bị sốc chi phí.`);
+  check('crash',S.panic>0.3,S.panic<0.1,'bad',()=>{
+    const why=[]; if(S.dsr>12) why.push('trả lãi quá nặng'); if(S.B>0.35) why.push('bong bóng quá lớn'); if(S.dI6>2) why.push('lãi suất tăng quá gấp');
+    return `Đổ vỡ: tín dụng đóng băng, giá tài sản lao dốc${why.length?' ('+why.join(', ')+')':''}.`;});
+  check('rec',S.x<-2,S.x>-0.5,'bad',()=>`Suy thoái: sản lượng thấp hơn tiềm năng ${fmt(-S.x)}%, thất nghiệp ${fmt(S.u)}%.`);
+  check('defl',S.pi<0,S.pi>1,'bad',()=>`Giảm phát: giá tiêu dùng giảm ${fmt(-S.pi)}%/năm, gánh nặng nợ thực tăng.`);
+  check('calm',S.t>12&&Math.abs(S.pi-3)<0.5&&Math.abs(S.x)<0.5&&S.B<0.1&&S.panic<0.05&&H.length>13&&Math.abs(H[H.length-13].x)>1.5,false,'ok','Kinh tế trở lại cân bằng.');
+  if(!armed.calm&&(Math.abs(S.x)>1.5)) armed.calm=true;
+}
+function renderLog(){
+  const ul=$('log');
+  if(!events.length){ul.innerHTML='<li><span class="empty">Các mốc quan trọng sẽ hiện ở đây khi xảy ra.</span></li>';return;}
+  ul.innerHTML=events.slice(0,60).map(e=>`<li><span class="m">${monthLabel(e.t)}</span><span class="d ${e.kind}"></span><span>${e.text}</span></li>`).join('');
+}
+
+/* ---------- GIAI ĐOẠN ---------- */
+function phase(){
+  const prevX=H.length>4?H[H.length-4].x:S.x;
+  if(S.panic>0.3) return ['Đổ vỡ & giảm nợ','t-bad','Người vay không trả nổi lãi, ngân hàng siết cho vay, tài sản bị bán tháo. Tín dụng co lại kéo cầu xuống.'];
+  if(S.x<-1.5&&S.x<prevX-0.05) return ['Suy thoái','t-bad','Cầu yếu hơn năng lực sản xuất. Thất nghiệp tăng, lạm phát giảm dần.'];
+  if(S.x<-1) return ['Phục hồi','t-warn','Sản lượng đang quay về tiềm năng. Lãi suất thấp giúp tín dụng nhích lên trở lại.'];
+  if(S.pi<0.5) return ['Giảm phát','t-bad','Giá giảm làm nợ thực nặng hơn và khiến người ta hoãn chi tiêu.'];
+  if(S.pi>5&&S.x>1) return ['Quá nóng – lạm phát','t-bad','Cầu vượt xa năng lực sản xuất. Lạm phát kỳ vọng tăng làm lãi suất thực tụt thêm nếu NHTW chưa phản ứng.'];
+  if(S.B>0.25) return ['Bong bóng tài sản','t-bad','Giá tài sản tách khỏi giá trị cơ bản và được nuôi bằng tiền vay. Giá tăng lại khuyến khích vay thêm.'];
+  if(S.c-S.cn>4) return ['Bùng nổ tín dụng','t-warn','Tiền vay tăng nhanh hơn thu nhập. Tiền mới chảy vào tài sản trước, CPI chưa phản ánh ngay.'];
+  if(S.pi>4) return ['Lạm phát dai dẳng','t-warn','Giá tiêu dùng vẫn cao hơn mục tiêu 3%.'];
+  if(S.c-S.cn<-3) return ['Thắt chặt','t-warn','Lãi suất cao hơn trung tính, tín dụng co lại. Nếu kéo dài sẽ gây suy thoái.'];
+  return ['Cân bằng','t-ok','Lãi suất gần trung tính, tín dụng tăng ngang thu nhập, giá cả ổn định quanh 3%.'];
+}
+
+/* ---------- KPI ---------- */
+function pill(level,txt){const c=level===2?'t-bad':level===1?'t-warn':'t-ok';return `<span class="pill ${c}">${txt}</span>`;}
+function realGrowth(){if(H.length<13) return S.gA+(S.x-(H[0].x));const a=H[H.length-13].Y,b=S.Y;return (b/a-1)*100;}
+function renderKPIs(){
+  const debt=S.D/S.N*100, g=realGrowth(), cx=S.c-S.cn;
+  const rows=[
+    ['Lãi suất điều hành',fmt(S.i,2)+'%',`cho vay ${fmt(S.iL,1)}%`, S.rL<S.rn-1.5?pill(1,'Nới lỏng'):S.rL>S.rn+1.5?pill(1,'Thắt chặt'):pill(0,'Trung tính')],
+    ['Lạm phát CPI',fmt(S.pi)+'%',`kỳ vọng ${fmt(S.pie)}%`, S.pi>6||S.pi<0?pill(2,S.pi<0?'Giảm phát':'Cao'):S.pi>4||S.pi<1.5?pill(1,'Lệch mục tiêu'):pill(0,'Ổn định')],
+    ['Tăng tín dụng',fmt(S.c)+'%',`GDP danh nghĩa ${fmt(S.gA+S.pi)}%`, cx>8?pill(2,'Rất nóng'):cx>3?pill(1,'Nóng'):cx<-3?pill(1,'Co lại'):pill(0,'Cân đối')],
+    ['Định giá tài sản',(S.B>=0?'+':'')+fmt(S.B*100,0)+'%','so với giá trị cơ bản', S.B>0.5?pill(2,'Bong bóng lớn'):S.B>0.2?pill(1,'Bong bóng'):S.B<-0.2?pill(1,'Bán tháo'):pill(0,'Hợp lý')],
+    ['Nợ / GDP',fmt(debt,0)+'%','ban đầu 120%', debt>180?pill(2,'Rất cao'):debt>145?pill(1,'Cao'):pill(0,'Bình thường')],
+    ['Trả lãi / thu nhập',fmt(S.dsr)+'%','ngưỡng nguy hiểm 12%', S.dsr>14?pill(2,'Quá tải'):S.dsr>12?pill(1,'Căng'):pill(0,'Chịu được')],
+    ['Tăng trưởng GDP thực',fmt(g)+'%',`tiềm năng ${fmt(S.gA)}%`, g<0?pill(2,'Suy giảm'):S.x>3?pill(1,'Quá nóng'):pill(0,'Ổn')],
+    ['Thất nghiệp',fmt(S.u)+'%','tự nhiên 3,5%', S.u>6?pill(2,'Cao'):S.u>4.5?pill(1,'Tăng'):S.u<2.5?pill(1,'Thiếu lao động'):pill(0,'Ổn')],
+  ];
+  $('kpis').innerHTML=rows.map(r=>`<div class="kpi"><span class="k">${r[0]}</span><span class="v">${r[1]}</span><span class="s"><span>${r[2]}</span>${r[3]}</span></div>`).join('');
+}
+
+/* ---------- BIỂU ĐỒ ---------- */
+const CH=[
+  {id:'c0',lg:'lg0',series:[{k:'i',l:'Lãi suất điều hành',c:'--s-rate'},{k:'pi',l:'Lạm phát CPI',c:'--s-cpi'},{k:'pie',l:'Lạm phát kỳ vọng',c:'--s-exp',dash:true}],ref:[{y:3,l:'mục tiêu 3%'}],unit:'%',zero:true},
+  {id:'c1',lg:'lg1',series:[{k:'c',l:'Tín dụng',c:'--s-credit'},{k:'ngdpg',l:'GDP danh nghĩa',c:'--s-ngdp',dash:true}],ref:[],unit:'%',zero:true},
+  {id:'c2',lg:'lg2',series:[{k:'H',l:'Giá tài sản',c:'--s-asset'},{k:'F',l:'Giá trị cơ bản',c:'--s-fund',dash:true}],ref:[{y:100,l:''}],unit:'',zero:false,fill:true},
+  {id:'c3',lg:'lg3',series:[{k:'dsr',l:'Trả lãi/thu nhập',c:'--s-dsr'},{k:'u',l:'Thất nghiệp',c:'--s-unemp'},{k:'x',l:'Chênh lệch sản lượng',c:'--s-gap'}],ref:[{y:12,l:'ngưỡng nợ 12%'}],unit:'%',zero:true},
+];
+let hoverIdx=null, hoverChart=null, colors={};
+function readColors(){const cs=getComputedStyle(document.documentElement);['--ink','--muted','--line','--soft','--panel','--bad'].concat(CH.flatMap(c=>c.series.map(s=>s.c))).forEach(k=>colors[k]=cs.getPropertyValue(k).trim());}
+function niceStep(range){const r=range/4;const p=Math.pow(10,Math.floor(Math.log10(r)));const n=r/p;return (n<1.5?1:n<3?2:n<7?5:10)*p;}
+function drawChart(ch){
+  const cv=$(ch.id), dpr=window.devicePixelRatio||1, w=cv.clientWidth, h=cv.clientHeight;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+  const g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  const data=H.slice(-WINDOW-1), n=data.length, t0=data[0].t;
+  let lo=Infinity,hi=-Infinity;
+  data.forEach(d=>ch.series.forEach(s=>{lo=Math.min(lo,d[s.k]);hi=Math.max(hi,d[s.k]);}));
+  ch.ref.forEach(r=>{lo=Math.min(lo,r.y);hi=Math.max(hi,r.y);});
+  if(ch.zero){lo=Math.min(lo,0);}
+  if(hi-lo<4){const m=(hi+lo)/2;hi=m+2;lo=m-2;}
+  const st=niceStep(hi-lo); lo=Math.floor(lo/st)*st; hi=Math.ceil(hi/st)*st;
+  const L=38,R=10,T=8,B=20, pw=w-L-R, ph=h-T-B;
+  const X=i=>L+pw*(i/(WINDOW)), Y=v=>T+ph*(1-(v-lo)/(hi-lo));
+  // crisis shading
+  g.fillStyle=colors['--bad']; g.globalAlpha=0.08;
+  for(let i=0;i<n;i++){ if(data[i].panic>0.3){g.fillRect(X(i)-pw/WINDOW/2,T,pw/WINDOW+0.5,ph);} }
+  g.globalAlpha=1;
+  // grid
+  g.font='11px "IBM Plex Mono",monospace'; g.textBaseline='middle'; g.textAlign='right';
+  for(let v=lo; v<=hi+1e-9; v+=st){
+    const y=Y(v); g.strokeStyle=colors['--line']; g.lineWidth=1; g.beginPath(); g.moveTo(L,y); g.lineTo(w-R,y); g.stroke();
+    g.fillStyle=colors['--muted']; g.fillText(fmt(v,st<1?1:0),L-6,y);
+  }
+  if(lo<0&&hi>0){g.strokeStyle=colors['--muted'];g.globalAlpha=.5;g.beginPath();g.moveTo(L,Y(0));g.lineTo(w-R,Y(0));g.stroke();g.globalAlpha=1;}
+  // x labels (năm)
+  g.textAlign='center'; g.textBaseline='top';
+  for(let i=0;i<n;i++){const t=data[i].t; if(t%12===0){g.fillStyle=colors['--muted'];g.fillText('N'+(t/12+1),X(i),h-B+5);
+    g.strokeStyle=colors['--line'];g.globalAlpha=.6;g.beginPath();g.moveTo(X(i),T);g.lineTo(X(i),T+ph);g.stroke();g.globalAlpha=1;}}
+  // ref lines
+  ch.ref.forEach(r=>{g.setLineDash([2,4]);g.strokeStyle=colors['--muted'];g.beginPath();g.moveTo(L,Y(r.y));g.lineTo(w-R,Y(r.y));g.stroke();g.setLineDash([]);
+    if(r.l){g.fillStyle=colors['--muted'];g.textAlign='left';g.textBaseline='bottom';g.fillText(r.l,L+4,Y(r.y)-2);}});
+  // bubble fill between H and F
+  if(ch.fill&&n>1){
+    g.beginPath(); for(let i=0;i<n;i++) g.lineTo(X(i),Y(data[i].H)); for(let i=n-1;i>=0;i--) g.lineTo(X(i),Y(data[i].F)); g.closePath();
+    g.fillStyle=colors['--s-asset']; g.globalAlpha=0.14; g.fill(); g.globalAlpha=1;
+  }
+  // series
+  ch.series.forEach(s=>{
+    g.strokeStyle=colors[s.c]; g.lineWidth=s.dash?1.6:2.2; g.setLineDash(s.dash?[5,4]:[]); g.lineJoin='round';
+    g.beginPath(); data.forEach((d,i)=>{const x=X(i),y=Y(d[s.k]); i?g.lineTo(x,y):g.moveTo(x,y);}); g.stroke(); g.setLineDash([]);
+    if(!s.dash){const d=data[n-1]; g.fillStyle=colors[s.c]; g.beginPath(); g.arc(X(n-1),Y(d[s.k]),3.5,0,7); g.fill();}
+  });
+  // hover
+  let idx=n-1;
+  if(hoverChart===ch.id&&hoverIdx!==null){idx=Math.max(0,Math.min(n-1,hoverIdx));
+    g.strokeStyle=colors['--ink'];g.globalAlpha=.35;g.beginPath();g.moveTo(X(idx),T);g.lineTo(X(idx),T+ph);g.stroke();g.globalAlpha=1;
+    ch.series.forEach(s=>{g.fillStyle=colors[s.c];g.beginPath();g.arc(X(idx),Y(data[idx][s.k]),3.5,0,7);g.fill();});}
+  const d=data[idx];
+  $(ch.lg).innerHTML=`<span style="color:var(--muted)" class="num">${monthLabel(d.t)}</span>`+ch.series.map(s=>`<span><i class="${s.dash?'dash':''}" style="background:var(${s.c});color:var(${s.c})"></i>${s.l} <em>${fmt(d[s.k],ch.unit?1:0)}${ch.unit}</em></span>`).join('');
+  ch._map={L,pw,n};
+}
+CH.forEach(ch=>{const cv=$(ch.id);
+  cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect(),m=ch._map;if(!m)return;hoverChart=ch.id;hoverIdx=Math.round((e.clientX-r.left-m.L)/m.pw*WINDOW);drawChart(ch);});
+  cv.addEventListener('pointerleave',()=>{hoverChart=null;hoverIdx=null;drawChart(ch);});
+});
+
+/* ---------- RENDER ---------- */
+function render(){
+  const y=Math.floor(S.t/12)+1,m=S.t%12+1;
+  $('dateLbl').textContent=`Năm ${y} · Tháng ${m}`; $('dateSub').textContent=`Tháng thứ ${S.t}`;
+  const [p,cls,txt]=phase(); const tag=$('phaseTag'); tag.textContent=p; tag.className='tag '+cls; $('phaseTxt').textContent=txt;
+  $('neutral').textContent=fmt(S.gA-0.5+S.pie,2)+'%';
+  if(ctlState.mode==='auto'){$('rateVal').textContent='Tự động: '+fmt(S.autoTarget,2)+'%';}
+  else $('rateVal').textContent=fmt(ctlState.rate,2)+'%'+(Math.abs(S.i-ctlState.rate)>0.01?` (đang ở ${fmt(S.i,2)}%)`:'');
+  renderKPIs(); CH.forEach(drawChart);
+}
+function tick(){
+  if(schedule&&schedule[S.t]){applyChanges(schedule[S.t].set,true); if(schedule[S.t].msg) addEvent('you',schedule[S.t].msg);}
+  S=step(S); H.push(snap(S)); if(H.length>WINDOW*3) H.splice(0,H.length-WINDOW*3);
+  detectEvents(); render();
+}
+
+/* ---------- ĐIỀU KHIỂN ---------- */
+function syncControls(){
+  $('rate').value=ctlState.rate; $('rate').disabled=ctlState.mode==='auto';
+  $('prod').value=ctlState.prod; $('prodVal').textContent=fmt(ctlState.prod)+'%/năm';
+  $('step').value=String(ctlState.step);
+  $('mManual').setAttribute('aria-pressed',ctlState.mode==='manual'); $('mAuto').setAttribute('aria-pressed',ctlState.mode==='auto');
+  $('modeHint').textContent=ctlState.mode==='auto'?'NHTW theo quy tắc Taylor: tăng lãi khi lạm phát vượt 3% hoặc kinh tế quá nóng, giảm khi suy yếu.':'Bạn kéo thanh trượt để đặt lãi suất mục tiêu.';
+}
+function applyChanges(set,fromSchedule){
+  Object.assign(ctlState,set);
+  S.mode=ctlState.mode; S.iTarget=ctlState.rate; S.maxStep=ctlState.step; S.gA=ctlState.prod;
+  if(set.oil) S.oil=set.oil; if(set.spec) S.spec=set.spec;
+  syncControls(); render();
+}
+let rateTimer;
+$('rate').addEventListener('input',e=>{applyChanges({rate:+e.target.value});clearTimeout(rateTimer);
+  rateTimer=setTimeout(()=>addEvent('you',`Bạn đặt lãi suất mục tiêu ${fmt(ctlState.rate,2)}%.`),600);});
+let prodTimer;
+$('prod').addEventListener('input',e=>{applyChanges({prod:+e.target.value});clearTimeout(prodTimer);
+  prodTimer=setTimeout(()=>addEvent('you',`Bạn đặt tăng năng suất ${fmt(ctlState.prod)}%/năm.`),600);});
+$('step').addEventListener('change',e=>{applyChanges({step:+e.target.value});addEvent('you',`Tốc độ điều chỉnh lãi suất: ${e.target.selectedOptions[0].text}.`);});
+$('mManual').onclick=()=>{applyChanges({mode:'manual',rate:Math.round(S.i*4)/4});addEvent('you','Bạn tự điều hành lãi suất.');};
+$('mAuto').onclick=()=>{applyChanges({mode:'auto'});addEvent('you','NHTW chuyển sang điều hành tự động.');};
+$('shOil').onclick=()=>{S.oil+=4;addEvent('you','Cú sốc giá dầu: chi phí sản xuất đẩy giá tiêu dùng lên.');};
+$('shSpec').onclick=()=>{S.spec+=6;addEvent('you','Làn sóng đầu cơ: nhà đầu tư vay để mua tài sản kỳ vọng tăng giá.');};
+$('shCredit').onclick=()=>{S.c+=8;addEvent('you','Bơm tín dụng: ngân hàng được nới hạn mức cho vay.');};
+
+function setPlaying(p){playing=p;$('play').textContent=p?'⏸ Tạm dừng':'▶ Chạy';lastTick=performance.now();}
+$('play').onclick=()=>setPlaying(!playing);
+$('speed').onchange=e=>{interval=+e.target.value;};
+$('ff').onclick=()=>{for(let k=0;k<12;k++) tick(); lastTick=performance.now();};
+$('reset').onclick=()=>{Object.assign(ctlState,{mode:'manual',rate:4.5,step:0.25,prod:2});syncControls();reset();setPlaying(true);};
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|SELECT|BUTTON/.test(e.target.tagName)){e.preventDefault();setPlaying(!playing);}});
+
+const SCEN=[
+  {n:'Tiền rẻ kéo dài',d:'Giữ lãi 1,5% mãi mãi. Xem thứ tự: tín dụng, tài sản, rồi mới đến CPI.',set:{mode:'manual',rate:1.5,step:20,prod:2},note:'Lãi 1,5% giữ nguyên. Quan sát bong bóng xuất hiện trước lạm phát.'},
+  {n:'Nới 2 năm, rồi siết quá chậm',d:'Tháng 24 NHTW tự động nhưng chỉ tăng 0,1 điểm/tháng.',set:{mode:'manual',rate:1.5,step:20,prod:2},sch:{24:{set:{mode:'auto',step:0.1},msg:'Kịch bản: NHTW bắt đầu siết, 0,1 điểm %/tháng.'}},note:'Tháng 24 sẽ chuyển sang siết chậm.'},
+  {n:'Nới 2 năm, rồi siết vừa phải',d:'Tháng 24 NHTW tự động, 0,5 điểm/tháng.',set:{mode:'manual',rate:1.5,step:20,prod:2},sch:{24:{set:{mode:'auto',step:0.5},msg:'Kịch bản: NHTW bắt đầu siết, 0,5 điểm %/tháng.'}},note:'Tháng 24 sẽ chuyển sang siết vừa phải.'},
+  {n:'Nới 2 năm, rồi phanh gấp',d:'Tháng 24 nâng thẳng lên 10% trong một tháng.',set:{mode:'manual',rate:1.5,step:20,prod:2},sch:{24:{set:{mode:'manual',rate:10,step:20},msg:'Kịch bản: NHTW nâng lãi suất lên 10% ngay lập tức.'}},note:'Tháng 24 lãi suất sẽ nhảy lên 10%.'},
+  {n:'Bùng nổ năng suất',d:'Năng suất 5%/năm, NHTW tự động. Tăng trưởng cao mà lạm phát thấp.',set:{mode:'auto',rate:4.5,step:0.25,prod:5},note:'Năng suất 5%/năm. Để ý giá tài sản vẫn có thể nhích lên.'},
+  {n:'Sốc giá dầu, giữ nguyên lãi',d:'Lạm phát chi phí đẩy trong khi lãi suất không đổi.',set:{mode:'manual',rate:4.5,step:0.25,prod:2,oil:4},note:'Lãi giữ 4,5%. Lạm phát kỳ vọng tăng làm lãi suất thực giảm.'},
+];
+$('scen').innerHTML=SCEN.map((s,i)=>`<button data-i="${i}"><b>${s.n}</b><span>${s.d}</span></button>`).join('');
+$('scen').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const sc=SCEN[+b.dataset.i];
+  const {oil,...rest}=sc.set; Object.assign(ctlState,rest); syncControls(); schedule=sc.sch||null; reset(true);
+  if(oil) S.oil=oil; $('scenNote').textContent=sc.note; addEvent('you','Bắt đầu thí nghiệm: '+sc.n+'.'); setPlaying(true);});
+
+/* ---------- VÒNG LẶP ---------- */
+function loop(now){
+  if(playing){const el=now-lastTick; if(el>=interval){lastTick=now; tick();}
+    $('mbar').style.width=Math.min(100,(now-lastTick)/interval*100)+'%';}
+  requestAnimationFrame(loop);
+}
+const mq=matchMedia('(prefers-color-scheme: dark)');
+const recolor=()=>{readColors();CH.forEach(drawChart);};
+mq.addEventListener?.('change',recolor);
+new MutationObserver(recolor).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+window.addEventListener('resize',()=>CH.forEach(drawChart));
+readColors(); syncControls(); reset();
+// Chạy sẵn 12 tháng cân bằng để biểu đồ có nền so sánh
+for(let k=0;k<12;k++){S=step(S);H.push(snap(S));} render();
+lastTick=performance.now(); requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>

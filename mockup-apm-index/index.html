@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APM Mockup Index</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, system-ui, sans-serif; color: #202b27; background: #f4f3ed; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1440px; margin: auto; padding: 68px 48px 80px; }
+    .eyebrow { color: #63806d; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    header { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 42px; }
+    h1 { font-family: Georgia, serif; font-size: clamp(42px, 5vw, 68px); font-weight: 400; letter-spacing: -.045em; line-height: 1; margin: 14px 0; }
+    .intro { max-width: 520px; color: #6b7770; line-height: 1.6; margin: 0; }
+    .count { color: #738178; font-size: 12px; white-space: nowrap; padding-bottom: 5px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .card { min-width: 0; background: #fff; border: 1px solid #e1e5df; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 22px #263e2c08; transition: transform .2s, box-shadow .2s; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px #263e2c12; }
+    .preview { display: block; position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #e9eee9; border-bottom: 1px solid #e8ece7; }
+    .preview iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; pointer-events: none; transform: scale(var(--scale)); transform-origin: top left; }
+    .preview::after { content: 'Open mockup ↗'; position: absolute; right: 12px; bottom: 12px; padding: 8px 10px; border-radius: 6px; background: #fff; color: #34483a; font-size: 11px; font-weight: 700; box-shadow: 0 2px 10px #0002; }
+    .info { padding: 23px 24px 25px; }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .number { color: #819087; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+    .tag { border-radius: 20px; background: #edf3ed; color: #55715c; padding: 5px 9px; font-size: 10px; font-weight: 700; }
+    h2 { font-family: Georgia, serif; font-size: 23px; font-weight: 400; margin: 15px 0 8px; }
+    .description { color: #748078; font-size: 13px; line-height: 1.55; min-height: 41px; margin: 0; }
+    .warning { color: #936b39; font-size: 12px; line-height: 1.5; margin: 12px 0 0; }
+    a:focus-visible { outline: 3px solid #4e7e61; outline-offset: -3px; }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 620px) { main { padding: 42px 20px 60px; } header { display: block; } .count { margin-top: 20px; } .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">Design exploration / APM</div><h1>Mockup gallery<span style="color:#8aa68f">.</span></h1><p class="intro">A collection of marketing order concepts. Explore each direction to see the full experience.</p></div>
+    <div class="count">08 CONCEPTS &nbsp; / &nbsp; SELECT A PREVIEW TO OPEN</div>
+  </header>
+  <div class="grid" id="gallery"></div>
+</main>
+<script>
+  const concepts = [
+    ['01', 'Engaging Editorial', 'Engaging', 'A warm, polished workspace for building property marketing orders.'],
+    ['02', 'Engaging & Bold', 'Engaging', 'An editorial ordering experience with bold typography and product proofs.'],
+    ['03', 'Engaging & Natural', 'Engaging', 'Warm ivory and forest green with a campaign summary and compact configuration.'],
+    ['04', 'Elegant & Guided', 'Elegant', 'A refined, step-by-step flow from product selection through review.'],
+    ['05', 'Simple & Refined', 'Simple', 'A modern property marketing concept with serif accents and clean controls.'],
+    ['06', 'Professional', 'Professional', 'A familiar administrative workspace with a compact, structured ordering flow.'],
+    ['07', 'Professional & Structured', 'Professional', 'A structured administrative workspace with a dark navigation rail and restrained blue accents.'],
+    ['08', 'Traditional & Focused', 'Professional', 'A restrained enterprise dashboard with a chevron wizard, property proofs, audience targeting, and guided checkout.'],
+  ];
+  const gallery = document.getElementById('gallery');
+  for (const [number, title, tag, description, incomplete] of concepts) {
+    const path = `../mockup-apm-${number}/index.html`;
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `<a class="preview" href="${path}" aria-label="Open mockup ${number}: ${title}"><iframe src="${path}" title="Preview of mockup ${number}" loading="lazy" tabindex="-1"></iframe></a><div class="info"><div class="topline"><span class="number">CONCEPT ${number} · ${['01', '02', '04', '07'].includes(number) ? 'CLAUDE OPUS' : 'CODEX'}</span><span class="tag">${tag}</span></div><h2>${title}</h2><p class="description">${description}</p>${incomplete ? '<p class="warning">Preview unavailable: this mockup references files that are not present yet.</p>' : ''}</div>`;
+    gallery.append(card);
+  }
+  const resize = new ResizeObserver(entries => { for (const entry of entries) entry.target.style.setProperty('--scale', entry.contentRect.width / 1440); });
+  document.querySelectorAll('.preview').forEach(preview => resize.observe(preview));
+</script>
+</body>
+</html>
