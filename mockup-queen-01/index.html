@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14100e">
+  <title>Queen Spa · Da Nang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="queen-spa-vxm">
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+  <header class="crown-bar" id="top">
+    <a class="mark" href="#top" aria-label="Queen Spa home">
+      <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 22 5 6l8 8 7-12 7 12 8-8 3 16Z"/></svg>
+      <span>Queen <em>Spa</em></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#chambers" data-i18n="nav.chambers">Chambers</a>
+      <a href="#menu" data-i18n="nav.treatments">Treatments</a>
+      <a href="#craft" data-i18n="nav.craft">Our craft</a>
+      <a href="#moments" data-i18n="nav.moments">Moments</a>
+      <a href="#visit" data-i18n="nav.visit">Visit</a>
+    </nav>
+    <span class="open-state" data-open-state></span>
+    <label class="lang-pick">
+      <span class="visually-hidden" data-i18n="lang.label">Language</span>
+      <select data-lang></select>
+    </label>
+    <a class="reserve-link" href="#menu" data-i18n="nav.reserve">Reserve</a>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <img class="hero-bg" src="https://www.queenspadanang.vn/uploads/gal/slide_816.jpg" alt="Ancient Egyptian style double room at Queen Spa" fetchpriority="high">
+      <div class="hero-veil"></div>
+      <div class="hero-inner">
+        <p class="overline" data-i18n="hero.overline">Son Tra · Da Nang · 16+ years</p>
+        <h1 data-i18n-html="hero.title">Sixteen years<br>of <em>royal</em> care.</h1>
+        <p class="lede" data-i18n="hero.lede">Natural herbs, traditional Vietnamese methods and therapists who love their craft — in themed chambers that feel a world away from the city.</p>
+        <div class="hero-cta">
+          <a class="gold-btn" href="#menu" data-i18n="hero.cta1">Choose a treatment</a>
+          <a class="line-btn" href="#chambers" data-i18n="hero.cta2">Tour the chambers</a>
+        </div>
+      </div>
+      <div class="laurels">
+        <div><strong data-i18n="laurel.years.v">16+</strong><span data-i18n="laurel.years">years in Da Nang</span></div>
+        <div><strong data-i18n="laurel.award.v">2025</strong><span data-i18n="laurel.award">Best Spa Experience in Vietnam · International Award</span></div>
+        <div><strong data-i18n="laurel.first.v">1st</strong><span data-i18n="laurel.first">in Da Nang for Bamboo &amp; Candle therapies</span></div>
+        <div><strong data-i18n="laurel.hours.v">10–21:30</strong><span data-i18n="laurel.hours">open every day</span></div>
+      </div>
+    </section>
+
+    <!-- CHAMBERS -->
+    <section class="chambers" id="chambers">
+      <div class="chambers-copy">
+        <p class="overline" data-i18n="chambers.overline">The chambers</p>
+        <h2 data-i18n-html="chambers.title">Choose the world<br><em>you rest in.</em></h2>
+        <div class="chamber-tabs" role="tablist" aria-label="Chambers" data-chamber-tabs></div>
+        <p class="chamber-desc" data-chamber-desc></p>
+      </div>
+      <div class="chamber-stage">
+        <img data-chamber-img alt="">
+        <div class="chamber-thumbs" data-chamber-thumbs></div>
+      </div>
+    </section>
+
+    <!-- MENU + RESERVATION -->
+    <section class="menu" id="menu">
+      <div class="menu-head">
+        <div>
+          <p class="overline" data-i18n="menu.overline">Service &amp; price list</p>
+          <h2 data-i18n-html="menu.title">Compose your <em>session</em></h2>
+        </div>
+        <div class="currency" role="radiogroup" aria-label="Currency">
+          <button type="button" role="radio" aria-checked="true" class="on" data-cur="vnd">VND</button>
+          <button type="button" role="radio" aria-checked="false" data-cur="usd">USD</button>
+        </div>
+      </div>
+
+      <div class="menu-layout">
+        <div class="menu-main">
+          <div class="cat-tabs" role="tablist" aria-label="Treatment type" data-cat-tabs></div>
+          <ul class="treatments" data-treatments></ul>
+        </div>
+
+        <aside class="ticket" aria-label="Your reservation" data-ticket>
+          <p class="overline" data-i18n="ticket.overline">Your reservation</p>
+          <div class="ticket-empty" data-ticket-empty>
+            <svg viewBox="0 0 40 24" aria-hidden="true"><path d="M2 22 5 6l8 8 7-12 7 12 8-8 3 16Z"/></svg>
+            <p data-i18n="ticket.empty">Tap a duration on any treatment to begin.</p>
+          </div>
+          <form class="ticket-form" data-ticket-form hidden>
+            <div class="ticket-pick">
+              <img data-pick-img alt="">
+              <div>
+                <b data-pick-name></b>
+                <span data-pick-meta></span>
+              </div>
+            </div>
+            <label>
+              <span data-i18n="ticket.date">Date</span>
+              <input type="date" name="date" data-date required>
+            </label>
+            <fieldset>
+              <legend data-i18n="ticket.time">Start time</legend>
+              <div class="slots" data-slots></div>
+            </fieldset>
+            <div class="ticket-row">
+              <label>
+                <span data-i18n="ticket.guests">Guests</span>
+                <select name="guests" data-guests><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+              </label>
+              <label>
+                <span data-i18n="ticket.chamber">Chamber</span>
+                <select name="room" data-room></select>
+              </label>
+            </div>
+            <div class="ticket-total">
+              <span data-i18n="ticket.total">Total</span>
+              <strong data-total></strong>
+            </div>
+            <button type="submit" class="gold-btn" data-i18n="ticket.submit">Request reservation</button>
+            <p class="ticket-note" data-ticket-note>Mockup only — nothing is sent. Reception confirms by Zalo, WhatsApp or email.</p>
+          </form>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CRAFT -->
+    <section class="craft" id="craft">
+      <div class="craft-collage">
+        <img src="https://www.queenspadanang.vn/uploads/gal/slide_779.jpg" alt="Bamboo massage at Queen Spa" loading="lazy">
+        <img src="https://www.queenspadanang.vn/uploads/gal/slide_778.jpg" alt="Candle massage at Queen Spa" loading="lazy">
+        <img src="https://www.queenspadanang.vn/uploads/gal/slide_780.jpg" alt="Herbal massage at Queen Spa" loading="lazy">
+      </div>
+      <div class="craft-copy">
+        <p class="overline" data-i18n="craft.overline">Our craft</p>
+        <h2 data-i18n-html="craft.title">Bamboo, candle<br>&amp; <em>herbs of the land.</em></h2>
+        <p data-i18n="craft.p1">Queen Spa was the first spa in Da Nang to research unique therapies such as Bamboo Spa and Spa Candles. Every material is made from natural herbs, combined with traditional Vietnamese methods.</p>
+        <p data-i18n="craft.p2">Our team are people who are passionate about spa — and we hope the modern, nature-inspired atmosphere gives you a truly great experience.</p>
+        <ol class="ritual-steps">
+          <li><b data-i18n="craft.s1">Natural herbs</b><span data-i18n="craft.s1.d">Every material, from the land</span></li>
+          <li><b data-i18n="craft.s2">Vietnamese methods</b><span data-i18n="craft.s2.d">Traditional technique, modern rooms</span></li>
+          <li><b data-i18n="craft.s3">A cup of tea</b><span data-i18n="craft.s3.d">Served after your massage</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- MOMENTS -->
+    <section class="moments" id="moments">
+      <div class="menu-head">
+        <div>
+          <p class="overline" data-i18n="moments.overline">Image gallery</p>
+          <h2 data-i18n-html="moments.title">Moments at <em>Queen</em></h2>
+        </div>
+      </div>
+      <div class="mosaic" data-mosaic></div>
+    </section>
+
+    <!-- VISIT -->
+    <section class="visit" id="visit">
+      <div class="visit-copy">
+        <p class="overline" data-i18n="visit.overline">Visit</p>
+        <h2 data-i18n-html="visit.title">144 Pham Cu Luong,<br><em>Son Tra, Da Nang.</em></h2>
+        <dl>
+          <div><dt data-i18n="visit.hours">Hours</dt><dd data-i18n="visit.hoursValue">10:00 – 21:30, every day</dd></div>
+          <div><dt data-i18n="visit.phone">Phone</dt><dd><a href="tel:+84932429429">(+84) 932 429 429</a></dd></div>
+          <div><dt data-i18n="visit.email">Email</dt><dd><a href="mailto:queenspadn@gmail.com">queenspadn@gmail.com</a></dd></div>
+        </dl>
+        <div class="socials">
+          <a href="https://zalo.me/0932429429" target="_blank" rel="noopener">Zalo</a>
+          <a href="https://wa.me/message/VVEK7XXYPCE3J1" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="https://www.facebook.com/QueenSpaDaNang" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.instagram.com/queenspa_danang/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tripadvisor.com.vn/Attraction_Review-g298085-d8262778-Reviews-Queen_Spa-Da_Nang.html" target="_blank" rel="noopener">Tripadvisor</a>
+        </div>
+      </div>
+      <a class="map-card" href="https://www.google.com/maps?ll=16.059758,108.236396&z=16&cid=5019330191543188094" target="_blank" rel="noopener">
+        <img src="https://www.queenspadanang.vn/uploads/gal/slide_784.jpg" alt="The Queen Spa team" loading="lazy">
+        <span data-i18n="visit.map">Open in Google Maps →</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span data-i18n="foot.tag">Queen Spa — Massage senior in Da Nang</span>
+    <span data-i18n="foot.note">Design mockup · content and imagery from queenspadanang.vn</span>
+  </footer>
+
+  <div class="lightbox" data-lightbox hidden>
+    <button type="button" aria-label="Close" data-i18n-label="lightbox.close" data-lightbox-close>✕</button>
+    <figure>
+      <img data-lightbox-img alt="">
+      <figcaption data-lightbox-cap></figcaption>
+    </figure>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

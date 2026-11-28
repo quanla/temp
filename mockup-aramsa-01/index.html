@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d3b4f">
+  <title>Aramsa Spa & Nail · Nha Trang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="aramsa-sea-qrt">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="bar" id="top">
+    <a class="logo" href="#top" aria-label="Aramsa Spa home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4c3 4 3 10 0 16-3-6-3-12 0-16Zm0 16c4-2 9-2 12 1-4 3-9 2-12-1Zm0 0c-4-2-9-2-12 1 4 3 9 2 12-1Z"/></svg>
+      <span>Aramsa<small>Spa &amp; Nail · Nha Trang</small></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#planner">Late flight?</a>
+      <a href="#menu">Menu</a>
+      <a href="#nails">Nails</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="bar-call" href="tel:+84843769222">+84 843 769 222</a>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow"><span class="pin"></span> 124 Hong Bang · central Nha Trang</p>
+        <h1>Checked out.<br>Flight's tonight.<br><em>Come float a while.</em></h1>
+        <p class="lede">Massage, nails, a hotel room to nap in and a ride to the airport — the largest spa facility in Nha Trang, built around a traveller's day.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#planner">Plan my last day</a>
+          <a class="btn ghost" href="#menu">Browse the menu</a>
+        </div>
+        <ul class="hero-tags">
+          <li>Body massage</li>
+          <li>Nail &amp; shampoo</li>
+          <li>Half-day hotel</li>
+          <li>Airport transfer</li>
+        </ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="wave"></div>
+        <img class="p1" src="https://aramsa.vn/web/image/13158-4935c128/10EmYpEWcmF8Xs9jeBYxrmQ1dL4e3FXbT.jpg" alt="">
+        <img class="p2" src="https://aramsa.vn/web/image/13218-3a1ddbe8/1B197pQ7VMZ2hf0i-_zxpYRxvYWrEpqO6.jpg" alt="">
+        <img class="p3" src="https://aramsa.vn/web/image/7318-4a27ef1c/z5749547520557_6f451d892031cc25c0ba281b79b5a9a1.svg" alt="">
+        <div class="offer-sticker">
+          <b>−20%</b><span>massage</span>
+          <b>−25%</b><span>nails</span>
+          <small>new guests · book ahead</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANNER -->
+    <section class="planner" id="planner">
+      <div class="planner-intro">
+        <p class="eyebrow light">Massage &amp; airport transfer combo</p>
+        <h2>Tell us your flight.<br><em>We'll shape the day.</em></h2>
+        <p>Pick a combo and your times — we'll sketch how your afternoon could flow. Combos are for groups of 2 or more, used the same day.</p>
+      </div>
+
+      <div class="planner-ui">
+        <div class="combos" role="radiogroup" aria-label="Choose a combo">
+          <button type="button" role="radio" aria-checked="false" data-combo="c60">
+            <small>Combo 1</small>
+            <b>60-min massage</b>
+            <span class="combo-price">540,000 ₫<i>/person</i></span>
+            <ul><li>Aramsa Signature 60'</li><li>Airport pick-up or drop-off</li><li>Free luggage keeping</li><li>Free shower</li></ul>
+          </button>
+          <button type="button" role="radio" aria-checked="false" data-combo="c90">
+            <small>Combo 2</small>
+            <b>90-min massage</b>
+            <span class="combo-price">690,000 ₫<i>/person</i></span>
+            <ul><li>Aramsa Signature 90'</li><li>Airport pick-up or drop-off</li><li>Free luggage keeping</li><li>Free shower</li></ul>
+          </button>
+          <button type="button" role="radio" aria-checked="true" class="on" data-combo="half">
+            <small>Combo 3 · most loved</small>
+            <b>Half-Day Combo</b>
+            <span class="combo-price">830,000 ₫<i>/person</i></span>
+            <ul><li>Aramsa Signature 90'</li><li>Hotel room up to 8 hours</li><li>Airport pick-up or drop-off</li><li>Luggage &amp; shower included</li></ul>
+          </button>
+        </div>
+
+        <div class="timeline-card">
+          <div class="time-inputs">
+            <label>
+              <span>I arrive at the spa</span>
+              <input type="time" value="11:00" data-arrive>
+            </label>
+            <label>
+              <span>My flight departs</span>
+              <input type="time" value="21:30" data-flight>
+            </label>
+            <label>
+              <span>Guests</span>
+              <select data-guests><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+            </label>
+          </div>
+          <ol class="timeline" data-timeline></ol>
+          <div class="timeline-foot">
+            <p data-plan-total></p>
+            <a class="btn sun" href="#visit">Request this plan</a>
+          </div>
+          <p class="fine">Suggested schedule for planning only — reception confirms the transfer time. Promotions don't apply to combos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section class="menu" id="menu">
+      <div class="menu-head">
+        <div>
+          <p class="eyebrow">The massage menu</p>
+          <h2>How long do <em>you have?</em></h2>
+        </div>
+        <div class="duration" role="radiogroup" aria-label="Session length">
+          <button type="button" role="radio" aria-checked="true" class="on" data-dur="60">60<small>min</small></button>
+          <button type="button" role="radio" aria-checked="false" data-dur="90">90<small>min</small></button>
+          <button type="button" role="radio" aria-checked="false" data-dur="120">120<small>min</small></button>
+        </div>
+      </div>
+      <div class="menu-tabs" role="tablist" aria-label="Menu category">
+        <button type="button" role="tab" aria-selected="true" class="on" data-cat="body">Full body</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="focus">Targeted &amp; therapy</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="care">Skin, face &amp; hair</button>
+        <button type="button" role="tab" aria-selected="false" data-cat="kids">Kids &amp; add-ons</button>
+      </div>
+      <div class="menu-grid" data-menu></div>
+      <p class="promo-line">Booking ahead as a new guest? <b>20% off massage</b> · <b>25% off nails</b>. <a href="#visit">Message us to book</a></p>
+    </section>
+
+    <!-- NAILS -->
+    <section class="nails" id="nails">
+      <figure>
+        <img src="https://aramsa.vn/web/image/7318-4a27ef1c/z5749547520557_6f451d892031cc25c0ba281b79b5a9a1.svg" alt="Nail service at Aramsa" loading="lazy">
+      </figure>
+      <div>
+        <p class="eyebrow">Nail studio</p>
+        <h2>Hands &amp; feet,<br><em>holiday-ready.</em></h2>
+        <p>Classic looks or the latest designs, done by skilled technicians in a clean, calm studio — with a 25% new-guest discount when you book ahead.</p>
+        <div class="nail-list">
+          <div><b>Manicure &amp; pedicure</b><span>Basic — cut, file, paint · Gel — long-lasting shine · Spa — relax and nourish</span></div>
+          <div><b>Artificial nails</b><span>Acrylic, X gel, dip powder</span></div>
+          <div><b>Nail art &amp; custom designs</b><span>From subtle to statement</span></div>
+          <div><b>Kids' nails</b><span>Gentle polish for little travellers</span></div>
+          <div><b>Foot scrubbing</b><span>Smooth heels after the beach</span></div>
+          <div><b>Hair tie</b><span>A finishing touch before dinner</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGNATURES -->
+    <section class="signatures">
+      <p class="eyebrow">Signature therapies</p>
+      <h2>Eight ways <em>to unwind</em></h2>
+      <div class="sig-scroller">
+        <article><img src="https://aramsa.vn/web/image/13218-3a1ddbe8/1B197pQ7VMZ2hf0i-_zxpYRxvYWrEpqO6.jpg" alt="" loading="lazy"><b>Bamboo Massage</b><span>A signature therapy at Aramsa</span></article>
+        <article><img src="https://aramsa.vn/web/image/13158-4935c128/10EmYpEWcmF8Xs9jeBYxrmQ1dL4e3FXbT.jpg" alt="" loading="lazy"><b>Aramsa Signature</b><span>Coconut oil, hot stones &amp; herbal bags</span></article>
+        <article><img src="https://aramsa.vn/web/image/13154-e05e97c0/1Z5XpgpOsMl_AioQ42EpZFVPva2PxVuA7.jpg" alt="" loading="lazy"><b>Thailand Style</b><span>Stretching, rhythm and yoga postures</span></article>
+        <article><img src="https://aramsa.vn/web/image/7366-950f6d86/cupping-0302-1280x500-1.jpg" alt="" loading="lazy"><b>Vietnamese Traditional</b><span>The harmony of traditional healing</span></article>
+        <article><img src="https://aramsa.vn/web/image/639-1b1b903e/massage-ba-bau-bluecare10-678x381.jpg" alt="" loading="lazy"><b>Pregnancy Massage</b><span>Comfort and bonding with your baby</span></article>
+        <article><img src="https://aramsa.vn/web/image/7383-da4bcd42/massage-huile-bougie-scaled-1.jpeg" alt="" loading="lazy"><b>Candle Massage</b><span>A delicate blend of light and warmth</span></article>
+        <article><img src="https://aramsa.vn/web/image/640-cb848932/full_1569919949_3224_2042647a967e0c0857a1198a41fb61ce.jpg" alt="" loading="lazy"><b>Four Hands</b><span>Double the relaxation, double the bliss</span></article>
+        <article><img src="https://aramsa.vn/web/image/692-d593bb06/woman-having-massage-with-pouch-picture-id491683745-njtjrvsb37i1byv252hj2gtle810wkjuh2gav0syhg.jpg" alt="" loading="lazy"><b>Herbal Balls</b><span>The perfect wellness retreat</span></article>
+      </div>
+    </section>
+
+    <!-- HAIR WASH -->
+    <section class="hairwash">
+      <div>
+        <p class="eyebrow light">Head &amp; ear care</p>
+        <h2>Hair wash &amp;<br><em>ear cleaning.</em></h2>
+        <p>Deep scalp cleansing, a soothing head massage and professional ear cleaning — a quick wellness break that leaves you lighter.</p>
+        <div class="hw-prices">
+          <div><b>200,000 ₫</b><span>Regular hair wash · 35–45'</span></div>
+          <div><b>375,000 ₫</b><span>Hair wash pro · 60' with face mask &amp; neck massage</span></div>
+          <div><b>250,000 ₫</b><span>Ear cleaning · 30'</span></div>
+        </div>
+      </div>
+      <img src="https://aramsa.vn/web/image/15838-abc05482/%25E1%25BA%25A2nh%2520ch%25E1%25BB%25A5p%2520m%25C3%25A0n%2520h%25C3%25ACnh%25202025-08-05%2520134324.svg" alt="Hair wash at Aramsa Spa" loading="lazy">
+    </section>
+
+    <!-- VISIT -->
+    <section class="visit" id="visit">
+      <div class="visit-card">
+        <p class="eyebrow">Visit &amp; book</p>
+        <h2>124 Hong Bang St,<br><em>Nha Trang.</em></h2>
+        <p>Tan Lap, Nha Trang · Khanh Hoa · Vietnam</p>
+        <a class="btn" href="https://www.google.com/maps/place/Aramsa+Spa+-+Nha+Trang/@12.2387776,109.1890216,17z" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div class="channels">
+        <a href="tel:+84843769222"><span class="ch-ico">☎</span><b>Call</b><small>+84 843 769 222</small></a>
+        <a href="https://wa.me/84843769222" target="_blank" rel="noopener"><span class="ch-ico">✆</span><b>WhatsApp</b><small>+84 843 769 222</small></a>
+        <div data-copy="aramsaspa" role="button" tabindex="0"><span class="ch-ico">K</span><b>KakaoTalk</b><small>ID: aramsaspa · tap to copy</small></div>
+        <div data-copy="aramsaspa" role="button" tabindex="0"><span class="ch-ico">L</span><b>Line</b><small>ID: aramsaspa · tap to copy</small></div>
+        <div data-copy="aramsa_spa" role="button" tabindex="0"><span class="ch-ico">W</span><b>WeChat</b><small>aramsa_spa · tap to copy</small></div>
+        <a href="mailto:aramsaspa.nhatrang@gmail.com"><span class="ch-ico">@</span><b>Email</b><small>aramsaspa.nhatrang@gmail.com</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Aramsa Spa &amp; Hotel · Nha Trang</span>
+    <span>Design mockup · content and imagery from aramsa.vn</span>
+  </footer>
+
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

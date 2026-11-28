@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1c1410">
+  <title>Di sản Xuân Đỉnh · Ngàn năm văn hiến</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="decar-heritage-kqz">
+  <a class="skip" href="#main">Bỏ qua tới nội dung</a>
+
+  <header class="bar" id="top">
+    <a class="brand" href="#top" aria-label="Di sản Xuân Đỉnh – trang chủ">
+      <span class="seal" aria-hidden="true">鼎</span>
+      <span class="brand-text">Xuân Đỉnh<small>Di sản ngàn năm</small></span>
+    </a>
+    <nav class="nav" aria-label="Chính">
+      <a href="#atlas">Di tích</a>
+      <a href="#trail">Hành trình</a>
+      <a href="#vr">Khám phá 360°</a>
+      <a href="#gallery">Thư viện</a>
+      <a href="#news">Tin tức</a>
+    </nav>
+    <button class="search-btn" type="button" data-open-search aria-label="Tìm kiếm">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <span>Tìm di tích</span><kbd>/</kbd>
+    </button>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" aria-label="Giới thiệu">
+      <div class="hero-media" data-hero></div>
+      <div class="hero-copy">
+        <p class="eyebrow">Phường Xuân Đỉnh · Hà Nội</p>
+        <h1>Khám phá<br><em>di sản ngàn năm</em></h1>
+        <p class="lede">Mười ba di tích, bốn làng cổ, một vùng đất giữ trọn hồn xứ Đoài giữa nhịp sống Thủ đô.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#atlas">Bắt đầu hành trình</a>
+          <a class="btn btn-ghost" href="#vr">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            Tham quan 360°
+          </a>
+        </div>
+      </div>
+      <div class="hero-caption" data-hero-caption></div>
+      <ol class="hero-dots" data-hero-dots aria-label="Chọn ảnh"></ol>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats" aria-label="Số liệu">
+      <div><b data-count="13">13</b><span>Di tích được xếp hạng</span></div>
+      <div><b data-count="6">6</b><span>Di tích Quốc gia</span></div>
+      <div><b data-count="7">7</b><span>Di tích Cấp Thành phố</span></div>
+      <div><b>UNESCO</b><span>Lễ hội Gióng đền Sóc</span></div>
+    </section>
+
+    <!-- STORY -->
+    <section class="story" aria-labelledby="story-h">
+      <div class="story-head">
+        <p class="eyebrow">Về vùng đất</p>
+        <h2 id="story-h">Nơi trầm mặc gặp<br>nhịp sống hiện đại</h2>
+      </div>
+      <div class="story-body">
+        <p class="dropcap">Nằm ở vị trí chiến lược phía Tây Bắc của Thủ đô Hà Nội ngàn năm văn hiến, Xuân Đỉnh từ lâu đã được biết đến là một vùng đất cổ giàu truyền thống lịch sử, mang đậm dấu ấn văn hóa xứ Đoài và vùng đồng bằng Bắc Bộ.</p>
+        <p>Không chỉ nổi danh với nghề làm mứt truyền thống mỗi dịp Tết đến Xuân về, Xuân Đỉnh còn là chốn hội tụ của hệ thống di tích lịch sử – văn hóa phong phú, uy nghiêm như Đền Sóc, Đình Hoàng và nhiều công trình tâm linh gắn liền với đời sống tín ngưỡng của bao thế hệ.</p>
+        <ul class="pillars">
+          <li><span>01</span><b>Di tích</b>Đình, đền, chùa, phủ và nhà thờ họ cổ kính.</li>
+          <li><span>02</span><b>Lễ hội</b>Hội Gióng, Ca trù và các lễ tục làng.</li>
+          <li><span>03</span><b>Nghề truyền thống</b>Mứt Tết Xuân Đỉnh, hương vị mâm cỗ Hà Nội.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ATLAS -->
+    <section class="atlas" id="atlas" aria-labelledby="atlas-h">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Bản đồ di tích</p>
+          <h2 id="atlas-h">Atlas di sản Xuân Đỉnh</h2>
+        </div>
+        <p class="section-note">Lọc theo loại hình và cấp xếp hạng. Chọn một điểm trên sơ đồ hoặc trong danh sách để xem chi tiết.</p>
+      </div>
+
+      <div class="filters" role="toolbar" aria-label="Bộ lọc">
+        <div class="chip-group" data-filter="kind"></div>
+        <div class="chip-group" data-filter="rank"></div>
+        <label class="view-toggle">
+          <input type="checkbox" data-map-toggle checked>
+          <span>Hiện sơ đồ</span>
+        </label>
+      </div>
+
+      <div class="atlas-grid" data-atlas>
+        <div class="map" aria-label="Sơ đồ minh hoạ vị trí di tích">
+          <svg class="map-art" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <path class="road" d="M0 40 C 25 38, 45 44, 100 40"/>
+            <path class="road" d="M48 0 C 50 30, 52 60, 56 100"/>
+            <path class="road thin" d="M10 90 C 35 66, 60 62, 95 66"/>
+            <path class="lake" d="M10 20 q 8 -10 18 -2 q 6 8 -4 12 q -12 4 -14 -10z"/>
+            <path class="lake" d="M84 52 q 8 -4 10 4 q -2 8 -8 6 q -6 -2 -2 -10z"/>
+          </svg>
+          <span class="map-label" style="left:52%;top:47%">Cáo Đỉnh</span>
+          <span class="map-label" style="left:18%;top:78%">Xuân Tảo</span>
+          <span class="map-label" style="left:80%;top:20%">Khu Lộc</span>
+          <span class="map-label" style="left:76%;top:90%">Quán La</span>
+          <span class="map-label" style="left:62%;top:62%">Thôn Nhang</span>
+          <div class="pins" data-pins></div>
+          <p class="map-note">Sơ đồ minh hoạ – không theo tỉ lệ</p>
+        </div>
+        <ul class="relic-list" data-list></ul>
+      </div>
+    </section>
+
+    <!-- TRAIL -->
+    <section class="trail" id="trail" aria-labelledby="trail-h">
+      <div class="trail-intro">
+        <p class="eyebrow">Lên kế hoạch</p>
+        <h2 id="trail-h">Hành trình của bạn</h2>
+        <p>Thêm di tích từ Atlas bằng nút <b>＋</b> để tạo lộ trình tham quan trong ngày. Ước tính ~40 phút mỗi điểm, đi bộ hoặc xe đạp giữa các làng.</p>
+        <div class="presets">
+          <button type="button" data-preset="dinh-gian,den-thanh-van,mieu-vu,ho-duong">Một buổi ở Cáo Đỉnh</button>
+          <button type="button" data-preset="dinh-gian,dinh-xuan-tao,mieu-vu,nguyen-cong-co,chua-khai-nguyen,dinh-quan-la">Sáu di tích Quốc gia</button>
+          <button type="button" data-preset="chua-thien-loc,phu-chua,ho-do">Khu Lộc yên bình</button>
+        </div>
+      </div>
+      <div class="trail-card" data-trail></div>
+    </section>
+
+    <!-- VR -->
+    <section class="vr" id="vr" aria-labelledby="vr-h">
+      <div class="vr-copy">
+        <p class="eyebrow">Không gian số</p>
+        <h2 id="vr-h">Bước vào di tích<br>qua góc nhìn 360°</h2>
+        <p>Tham quan trực tuyến chính điện, sân đình và các chi tiết chạm khắc như đang đứng tại chỗ.</p>
+        <div class="vr-tabs" role="tablist" data-vr-tabs></div>
+      </div>
+      <div class="vr-stage" data-vr-stage>
+        <div class="vr-pano" data-vr-pano></div>
+        <div class="vr-hud">
+          <span class="vr-live">● VR360</span>
+          <span data-vr-name></span>
+          <span class="vr-hint">Kéo để xoay</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery" id="gallery" aria-labelledby="gallery-h">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Thư viện truyền thông</p>
+          <h2 id="gallery-h">Ảnh &amp; Video</h2>
+        </div>
+        <a class="link-arrow" href="#gallery">Xem toàn bộ thư viện</a>
+      </div>
+      <div class="mosaic" data-gallery></div>
+    </section>
+
+    <!-- NEWS -->
+    <section class="news" id="news" aria-labelledby="news-h">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Tin tức &amp; Sự kiện</p>
+          <h2 id="news-h">Nhịp sống Xuân Đỉnh</h2>
+        </div>
+        <a class="link-arrow" href="#news">Tất cả tin tức</a>
+      </div>
+      <div class="news-grid" data-news></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="seal" aria-hidden="true">鼎</span>
+          <span class="brand-text">Xuân Đỉnh<small>Di sản ngàn năm</small></span>
+        </a>
+        <p>Cổng thông tin giới thiệu, quảng bá các di tích lịch sử – văn hoá phường Xuân Đỉnh: bảo tồn giá trị truyền thống, kết nối quá khứ với hiện tại, đưa di sản đến gần hơn với cộng đồng.</p>
+      </div>
+      <div>
+        <h3>Liên hệ</h3>
+        <a href="tel:02437509036">024 3750 9036</a>
+        <a href="mailto:vanthu_pxuandinh@hanoi.gov.vn">vanthu_pxuandinh@hanoi.gov.vn</a>
+        <span>Việt Nam</span>
+      </div>
+      <div>
+        <h3>Liên kết nhanh</h3>
+        <a href="#atlas">Bản đồ GIS di tích</a>
+        <a href="#atlas">Danh mục di tích lịch sử</a>
+        <a href="#news">Tin tức &amp; sự kiện</a>
+      </div>
+    </div>
+    <p class="copy">© 2026 Bản quyền thuộc UBND phường Xuân Đỉnh · Bản mockup tái thiết kế giao diện</p>
+  </footer>
+
+  <!-- Detail drawer -->
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="drawer" data-drawer aria-hidden="true" aria-labelledby="drawer-h" role="dialog">
+    <button class="drawer-close" type="button" data-close aria-label="Đóng">✕</button>
+    <div data-drawer-body></div>
+  </aside>
+
+  <!-- Search palette -->
+  <div class="palette" data-palette hidden role="dialog" aria-label="Tìm kiếm di tích">
+    <div class="palette-box">
+      <input type="search" placeholder="Tìm đình, đền, chùa, làng…" data-palette-input aria-label="Từ khoá">
+      <ul data-palette-results></ul>
+      <p class="palette-foot"><kbd>↑</kbd><kbd>↓</kbd> chọn · <kbd>Enter</kbd> mở · <kbd>Esc</kbd> đóng</p>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" data-lightbox hidden>
+    <button type="button" data-lb-prev aria-label="Ảnh trước">‹</button>
+    <figure><img alt="" data-lb-img><figcaption data-lb-cap></figcaption></figure>
+    <button type="button" data-lb-next aria-label="Ảnh sau">›</button>
+    <button class="lb-close" type="button" data-lb-close aria-label="Đóng">✕</button>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

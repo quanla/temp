@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2a22">
+  <title>Herbal Spa · Da Nang & Hoi An</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="herbal-two-zkp">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="topbar" id="top">
+    <a class="brand" href="#top" aria-label="Herbal Spa home">
+      <span class="brand-mark" aria-hidden="true">❦</span>
+      <span>Herbal <em>Spa</em></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#rituals">Rituals</a>
+      <a href="#morning">Morning offer</a>
+      <a href="#branches">Branches</a>
+      <a href="#stories">Guest stories</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="tray-toggle" type="button" data-open-tray>
+      <span>Your ritual</span>
+      <b class="tray-count" data-tray-count>0</b>
+    </button>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">Da Nang · Hoi An · since 2014</p>
+        <h1>Slow down.<br><em>Many hands</em><br>will carry you.</h1>
+        <p class="lede">Premium herbal wellness in central Vietnam — warm oils, hot stones and therapists who move as one. Over ten years, five branches, guests from 30+ countries every month.</p>
+
+        <form class="quick-book" data-quick-book>
+          <label>
+            <span>Branch</span>
+            <select name="branch">
+              <option>Da Nang · 99–101 Phan Tu</option>
+              <option>Da Nang · 201 Duong Dinh Nghe</option>
+              <option>Da Nang · Boutique, 90 Duong Dinh Nghe</option>
+              <option>Hoi An · 48 Ba Trieu</option>
+            </select>
+          </label>
+          <label>
+            <span>Date</span>
+            <input type="date" name="date" data-date>
+          </label>
+          <label>
+            <span>Guests</span>
+            <select name="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5+</option></select>
+          </label>
+          <button type="submit">Check times</button>
+        </form>
+      </div>
+
+      <div class="hero-visual">
+        <figure class="hero-main">
+          <img src="https://herbalspa.vn/data/slide_desktop/herbal_spa_experience.webp" alt="A treatment room at Herbal Spa" fetchpriority="high">
+        </figure>
+        <figure class="hero-side">
+          <img src="https://herbalspa.vn/data/news/300/giao-huong-bon-tay-54.webp" alt="Four-hands massage">
+        </figure>
+        <div class="breath" aria-hidden="true">
+          <span class="breath-ring"></span>
+          <span class="breath-label" data-breath>breathe in</span>
+        </div>
+        <div class="badge">
+          <strong>#1</strong>
+          <span>on Tripadvisor<br>Top 10% worldwide since 2018</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF STRIP -->
+    <section class="proof" aria-label="Why Herbal Spa">
+      <div><strong>10+</strong><span>years of herbal care</span></div>
+      <div><strong>120+</strong><span>therapists, each 3+ years experienced</span></div>
+      <div><strong>5</strong><span>branches in Da Nang centre &amp; Hoi An Ancient Town</span></div>
+      <div><strong>2–8</strong><span>hands — exclusive four, six &amp; eight-hand rituals</span></div>
+    </section>
+
+    <!-- RITUAL FINDER -->
+    <section class="rituals" id="rituals">
+      <div class="section-head">
+        <div>
+          <p class="kicker">The menu</p>
+          <h2>Find your <em>ritual</em></h2>
+        </div>
+        <div class="currency" role="group" aria-label="Currency">
+          <button type="button" class="on" data-currency="vnd">VND</button>
+          <button type="button" data-currency="usd">USD</button>
+        </div>
+      </div>
+
+      <div class="finder">
+        <div class="finder-row" role="group" aria-label="Filter by focus">
+          <span class="finder-label">I want to</span>
+          <button type="button" class="chip on" data-focus="all">see everything</button>
+          <button type="button" class="chip" data-focus="multi">be held by many hands</button>
+          <button type="button" class="chip" data-focus="oil">melt into warm oil</button>
+          <button type="button" class="chip" data-focus="deep">release deep tension</button>
+          <button type="button" class="chip" data-focus="skin">renew my skin</button>
+          <button type="button" class="chip" data-focus="gentle">something gentle</button>
+        </div>
+        <div class="finder-row" role="group" aria-label="Filter by therapists">
+          <span class="finder-label">Therapists</span>
+          <div class="hands" data-hands-group>
+            <button type="button" class="on" data-hands="0">Any</button>
+            <button type="button" data-hands="1">1</button>
+            <button type="button" data-hands="2">2</button>
+            <button type="button" data-hands="3">3</button>
+            <button type="button" data-hands="4">4</button>
+          </div>
+          <span class="finder-result" data-result-count></span>
+        </div>
+      </div>
+
+      <div class="ritual-grid" data-ritual-grid></div>
+      <p class="empty" data-empty hidden>No ritual matches that combination yet — try another number of therapists.</p>
+    </section>
+
+    <!-- MORNING OFFER -->
+    <section class="morning" id="morning">
+      <div class="sun" aria-hidden="true"></div>
+      <div class="morning-copy">
+        <p class="kicker">Morning promotion</p>
+        <h2><span class="big">30%</span> off every service<br><em>before 1 pm.</em></h2>
+        <p class="morning-status" data-morning-status></p>
+        <dl>
+          <div><dt>Window</dt><dd>9:00 AM – 1:00 PM</dd></div>
+          <div><dt>Valid until</dt><dd>30 / 11 / 2026</dd></div>
+          <div><dt>Note</dt><dd>Book at least 15 minutes ahead</dd></div>
+        </dl>
+        <div class="code-row">
+          <code>HBMP2026</code>
+          <button type="button" data-copy="HBMP2026">Copy code</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WELCOME / STORY -->
+    <section class="welcome">
+      <figure>
+        <img src="https://herbalspa.vn/data/album/1000/herbal-spa-an-thuong-1-1774339439.webp" alt="Herbal Spa interior" loading="lazy">
+      </figure>
+      <div>
+        <p class="kicker">Welcome to Herbal Spa</p>
+        <h2>A five-star hush,<br><em>rooted in herbs.</em></h2>
+        <p>Herbal Spa offers a peaceful atmosphere with skilled therapists, professional treatments and natural herbal products — made to help you relax, recharge and restore. Thousands of travellers from more than 30 countries visit each month.</p>
+        <ul class="perks">
+          <li><b>After your treatment</b> hot soup, mango dessert, fruit, coconut cake or herbal tea — on the house.</li>
+          <li><b>Private rooms</b> for couples and families — just mention it when booking.</li>
+          <li><b>Showers &amp; lockers</b> for every guest, before or after.</li>
+          <li><b>Visa, MasterCard</b> and contactless payments accepted.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery" aria-label="Moments at Herbal Spa">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Moments</p>
+          <h2>Step <em>inside</em></h2>
+        </div>
+        <div class="gallery-nav">
+          <button type="button" aria-label="Scroll left" data-gallery="-1">←</button>
+          <button type="button" aria-label="Scroll right" data-gallery="1">→</button>
+        </div>
+      </div>
+      <div class="gallery-track" data-gallery-track>
+        <img src="https://herbalspa.vn/data/album/1000/herbal-spa-da-nang-branch-1.webp" alt="Da Nang branch 1" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/500/herbal-spa-my-khe-1774340856.webp" alt="Treatment room" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/1000/quay-le-tan.webp" alt="Reception" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/500/giuong-massage.webp" alt="Massage beds" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/500/sanh-don-khach-3.webp" alt="Welcome lobby" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/500/khu-nghi-ngoi-sau-massage-2.webp" alt="Relaxation lounge" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/500/herbal-boutique-spa-1774340547.webp" alt="Herbal Boutique Spa" loading="lazy">
+        <img src="https://herbalspa.vn/data/album/1000/mat-tien-xoa-day-dien.webp" alt="Spa frontage" loading="lazy">
+      </div>
+    </section>
+
+    <!-- BRANCHES -->
+    <section class="branches" id="branches">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Visit us</p>
+          <h2>Four doors, <em>one calm.</em></h2>
+        </div>
+        <div class="city-tabs" role="tablist" aria-label="City">
+          <button type="button" role="tab" class="on" aria-selected="true" data-city="all">All</button>
+          <button type="button" role="tab" aria-selected="false" data-city="danang">Da Nang</button>
+          <button type="button" role="tab" aria-selected="false" data-city="hoian">Hoi An</button>
+        </div>
+      </div>
+      <div class="branch-list">
+        <article class="branch" data-city-item="danang">
+          <img src="https://herbalspa.vn/data/news/banner/mobile/herbal-spa-an-thuong-1022.webp" alt="Herbal Spa Da Nang Branch 1" loading="lazy">
+          <div>
+            <small>Da Nang · Branch 1</small>
+            <h3>Phan Tu</h3>
+            <p>99–101 Phan Tu, Ngu Hanh Son, Da Nang</p>
+            <a href="tel:+84901081188">+84 901 081 188</a>
+          </div>
+        </article>
+        <article class="branch" data-city-item="danang">
+          <img src="https://herbalspa.vn/data/news/banner/mobile/herbal-spa-da-nang-221.webp" alt="Luxury Herbal Spa Da Nang" loading="lazy">
+          <div>
+            <small>Da Nang · An Hai</small>
+            <h3>Duong Dinh Nghe</h3>
+            <p>201 Duong Dinh Nghe, An Hai, Son Tra, Da Nang</p>
+            <a href="tel:+84901825789">+84 901 825 789</a>
+          </div>
+        </article>
+        <article class="branch" data-city-item="danang">
+          <img src="https://herbalspa.vn/data/news/banner/mobile/herbal-boutique-spa-222.webp" alt="Herbal Boutique Spa" loading="lazy">
+          <div>
+            <small>Da Nang · Branch 3</small>
+            <h3>Herbal Boutique Spa</h3>
+            <p>90 Duong Dinh Nghe, An Hai, Son Tra, Da Nang</p>
+            <a href="tel:+84762347999">+84 762 347 999</a>
+          </div>
+        </article>
+        <article class="branch" data-city-item="hoian">
+          <img src="https://herbalspa.vn/data/news/banner/mobile/herbal-spa-hoi-an-480.webp" alt="Herbal Spa Hoi An" loading="lazy">
+          <div>
+            <small>Hoi An · Ancient Town</small>
+            <h3>Ba Trieu</h3>
+            <p>48 Ba Trieu, Hoi An</p>
+            <a href="tel:+84796813888">+84 796 813 888</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="stories" id="stories">
+      <p class="kicker">Guest stories · Google Maps</p>
+      <div class="quote-stage">
+        <blockquote data-quote>
+          <p data-quote-text></p>
+          <footer><span class="stars">★★★★★</span> <b data-quote-name></b></footer>
+        </blockquote>
+        <div class="quote-dots" data-quote-dots role="tablist" aria-label="Reviews"></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div>
+        <p class="kicker">Before you come</p>
+        <h2>Good to <em>know</em></h2>
+        <p class="faq-aside">Still wondering? Message reception on WhatsApp, Zalo, Line, KakaoTalk or Messenger — or call <a href="tel:+84901825789">+84 901 825 789</a>.</p>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>Why is Herbal Spa Da Nang so popular?</summary>
+          <p>A premium, clean and peaceful space; highly skilled, experienced therapists; and a wide range of treatments — from relaxation to specialised therapies.</p>
+        </details>
+        <details>
+          <summary>What extras do guests receive?</summary>
+          <p>Every session ends with a complimentary light refreshment — hot soup, mango dessert, fruit, coconut cake or herbal tea, varying by season. Traveller-exclusive promotions run regularly.</p>
+        </details>
+        <details>
+          <summary>Are there private rooms for couples or families?</summary>
+          <p>Yes. Let us know when you reserve and we'll arrange the most suitable room.</p>
+        </details>
+        <details>
+          <summary>Can I shower before or after my treatment?</summary>
+          <p>Absolutely — clean shower facilities are available. Just ask reception.</p>
+        </details>
+        <details>
+          <summary>Are personal lockers available?</summary>
+          <p>Yes. Every guest gets a personal locker for the whole visit.</p>
+        </details>
+        <details>
+          <summary>Do you accept credit cards or international payments?</summary>
+          <p>Yes — Visa, MasterCard and other international and contactless methods. Contact us ahead if you plan to use a specific option.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="foot-cta">
+      <h2>Your quiet hour<br><em>is waiting.</em></h2>
+      <button type="button" class="btn-light" data-open-tray>Plan my visit</button>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <b>Herbal Spa</b>
+        <p>Premium herbal wellness in Da Nang &amp; Hoi An, 10+ years.</p>
+      </div>
+      <div>
+        <b>Da Nang</b>
+        <a href="tel:+84901825789">+84 901 825 789</a>
+        <a href="mailto:Herbalspadn@gmail.com">Herbalspadn@gmail.com</a>
+      </div>
+      <div>
+        <b>Hoi An</b>
+        <a href="tel:+84796813888">+84 796 813 888</a>
+        <a href="mailto:hoian.herbalspa@gmail.com">hoian.herbalspa@gmail.com</a>
+      </div>
+    </div>
+    <p class="fine">Design mockup · content and imagery from herbalspa.vn</p>
+  </footer>
+
+  <!-- RITUAL TRAY (booking drawer) -->
+  <div class="scrim" data-scrim hidden></div>
+  <aside class="tray" data-tray aria-label="Your ritual" aria-hidden="true">
+    <div class="tray-head">
+      <h2>Your <em>ritual</em></h2>
+      <button type="button" class="tray-close" data-close-tray aria-label="Close">✕</button>
+    </div>
+    <ul class="tray-items" data-tray-items></ul>
+    <p class="tray-empty" data-tray-empty>Nothing here yet. Tap <b>＋ Add</b> on any ritual to start planning.</p>
+    <div class="tray-total">
+      <span>Estimated from</span>
+      <strong data-tray-total>0 ₫</strong>
+    </div>
+    <label class="tray-promo">
+      <input type="checkbox" data-promo>
+      <span>Apply morning code <b>HBMP2026</b> (−30%, 9 am–1 pm)</span>
+    </label>
+    <form class="tray-form" data-tray-form>
+      <input name="name" placeholder="Your name" required>
+      <input name="contact" placeholder="WhatsApp, Zalo or email" required>
+      <button type="submit">Request booking</button>
+      <p class="tray-note" data-tray-note>Mockup only — nothing is sent.</p>
+    </form>
+  </aside>
+
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+  <a class="mobile-book" href="#rituals">Book a ritual</a>
+
+  <script src="app.js"></script>
+</body>
+</html>
